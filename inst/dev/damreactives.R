@@ -220,17 +220,20 @@ output$summary <- reactivePrint(function() {
 # Generate output for the plots tab
 output$plots <- reactivePlot(function() {
 
-	# plotting could be expensive so only done when tab is being viewed
-	if(input$tool == 'dataview' || input$analysistabs != 'Plots') return()
+	# Depend on hidden values
+	print(input$.shinyout_plots_height)
+	print(input$.shinyout_plots_width)
 
-	f <- get(paste("plot",input$tool,sep = '.'))
-	result <- get(input$tool)()
-	if(!is.character(result)) {
-		f(result)
-	} else {
-		plot(x = 1, type = 'n', main="No variable selection made", axes = FALSE, xlab = "", ylab = "")
-	}
-}, width=600, height=600)
+	# Or can use:
+	# print(str(as.list(input)))
+
+	# If deterministic, no loop
+	# set.seed(122)
+
+	print(qplot(1:3,runif(3)))
+
+	# Removing height and width settings can break loop
+}, height=600, width=600)
 
 # Generate output for the extra tab
 output$extra <- reactivePrint(function() {
